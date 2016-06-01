@@ -10,7 +10,8 @@ var config = require('./config')
 var _ = require('lodash')
 var fs = require('fs')
 var path  = require('path')
-var proxy = require('./proxy')
+//var proxy = require('./proxy')
+var httpProxy = require('http-proxy')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -35,7 +36,12 @@ app.use((req, res, next) => {
 * 请求代理方式
 */
 if(!!config.proxy.host){
-    app.use(proxy(config.proxy))
+    var proxy = httpProxy.createProxyServer({})
+    app.use((req, res) => {
+        proxy.web(req, res, {
+            target: config.proxy
+        });
+    })
 }else{/*本地请求方式*/
     _.forEach(config.routes, (url, key) => {
         let arr = key.split('::')

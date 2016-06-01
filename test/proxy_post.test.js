@@ -25,4 +25,20 @@ describe('POST请求代理', function(){
             })
         })
     })
+
+    describe.only('#删除用户', function(){
+        it('删除用户，请求成功返回用户列表', function(done){
+            request.delete('http://localhost:3000/user/1')
+                .end(function(err, res){
+                    if(err){
+                        throw err
+                    }
+                    let users = res.body
+                    assert.isNotNull(users)
+                    assert.isArray(users)
+                    assert.lengthOf(users, 3)
+                    done()
+                })
+        })
+    })
 })
