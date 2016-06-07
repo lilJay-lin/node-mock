@@ -8,11 +8,6 @@
 mock目录下存放静态json文件， router目录下存放请求处理js模拟接口请求处理
 
 ```
-    ~~var config = {
-                     '/user': 'get::router/user.js',
-                     '/user/:id': 'get::router/user.js',
-                     '/article': 'get::mock/article.json'
-                 }~~
     var config = {
                      routes:{
                          'get::/user': 'router/user.js',
