@@ -24,11 +24,6 @@ config配置增加proxy做请求代理,proxy.host非空时，请求实际为代�
 
 ```
     var config = {
-                     routes:{
-                         'get::/user': 'router/user.js',
-                         'get::/user/:id': 'router/user.js',
-                         'get::/article': 'mock/article.json'
-                     },
                      proxy: {
                          port: '8080',
                          host: 'localhost',
