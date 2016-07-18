@@ -50,7 +50,7 @@ if(!!config.proxy.host){
         let type = url.split('/')[0]
         url = path.resolve(__dirname, url)
         if(type === 'mock'){
-            route[method]((req, res, next) => {
+            route[method]((req, res, next) =>  {
                 fs.exists(url, (exists) => {
                     if(exists){
                         let readStream = fs.createReadStream(url)

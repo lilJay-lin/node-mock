@@ -12,7 +12,6 @@ module.exports = function({port, host, protocol}){
             protocol,
             pathname : req.originalUrl
         })
-
         let method = req.method.toLowerCase()
         let sreq = request[method](url)
             .send(req.body || {});
