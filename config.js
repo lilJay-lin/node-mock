@@ -9,13 +9,10 @@
  */
 module.exports = {
     routes: {
-        'get::/user': 'router/user.js',
-        'get::/user/:id': 'router/user.js',
-        'get::/article': 'mock/article.json',
     },
     proxy: {
         port: '8080',
-        host: 'localhost',
+        host: '',
         protocol: 'http'
     }
 }

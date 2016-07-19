@@ -18,7 +18,8 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
-    "http-proxy": "^1.13.3"
+    "http-proxy": "^1.13.3",
+    "lodash": "^4.13.1"
   },
   "devDependencies": {
     "lodash": "^4.13.1",
