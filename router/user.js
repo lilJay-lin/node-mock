@@ -26,14 +26,14 @@ for(;i < 20; i++){
 /user/{id} : GET_2/PATCH_2/DELETE_2
 /user/batch : PATCH_2/DELETE_2*/
 let getPageData = function (datas = [], curPage = 1){
-    let result = {}
+    let result = {result: {}}
     let pageSize = 10
     let total = datas.length
-    let totalPage = total / 10 + total % 10 === 0 ? 0 : 1
+    let totalPage = parseInt(total / pageSize, 10) + (total % pageSize === 0 ? 0 : 1)
     if(curPage > totalPage){
-        result.datas = []
+        result.result.datas = []
     }else {
-        result.datas = datas.splice((curPage - 1) * pageSize, pageSize)
+        result.result.datas = datas.splice((curPage - 1) * pageSize, pageSize -1 )
     }
     result.total = total
     result.curPage = curPage
@@ -55,12 +55,13 @@ module.exports = {
                 return ~searchKeyword.indexOf(name)
             }}))
             let pageInfo = getPageData(filterUsers, curPage)
-            _.forEach(pageInfo, function(value, key) => {
+            _.forEach(pageInfo, (value, key) => {
                 result[key] = value
             })
         }else {
-            let pageInfo = getPageData(users, curPage)
-            _.forEach(pageInfo, function(value, key) => {
+            let curPage = req.query.curPage || 1
+            let pageInfo = getPageData(_.clone(users), curPage)
+            _.forEach(pageInfo,(value, key) => {
                 result[key] = value
             })
         }

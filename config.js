@@ -9,6 +9,10 @@
  */
 module.exports = {
     routes: {
+        "get::/user": "router/user.js",
+        "get::/user/:id": "router/user.js",
+        "post::/user": "router/user.js",
+        "delete::/user/:id": "router/user.js"
     },
     proxy: {
         port: '8080',
