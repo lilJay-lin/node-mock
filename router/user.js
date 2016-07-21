@@ -1,46 +1,17 @@
 /**
  * Created by liljay on 2016/5/29.
  */
-var guui = require('../util')
+let datas = require('./datas')
 var _ = require('lodash')
-let users = [
-];
+let users = datas.users
 let getResult = function (){
     return _.clone({ "success":1,"msg":"","result":{}})
 };
-let i = 0;
-let names = ['jack', 'liljay', 'jim', 'lucy', 'alimy', 'yesl']
-for(;i < 20; i++){
-    let name = names[parseInt(Math.random() * names.length)];
-    users.push({
-        id: guui(),
-        login_name: name,
-        identity: 441522 + (Math.random() + '').substr(2, 10),
-        phone_num: 159 + (Math.random() + '').substr(3,8),
-        name: guui(),
-        password: '',
-        description: name
-    })
-}
+
 /*/user : GET_2/POST_2（searchKeyword）
 /user/{id} : GET_2/PATCH_2/DELETE_2
 /user/batch : PATCH_2/DELETE_2*/
-let getPageData = function (datas = [], curPage = 1){
-    let result = {result: {}}
-    let pageSize = 10
-    let total = datas.length
-    let totalPage = parseInt(total / pageSize, 10) + (total % pageSize === 0 ? 0 : 1)
-    if(curPage > totalPage){
-        result.result.datas = []
-    }else {
-        result.result.datas = datas.splice((curPage - 1) * pageSize, pageSize -1 )
-    }
-    result.total = total
-    result.curPage = curPage
-    result.pageSize = pageSize
-    result.totalPage = totalPage
-    return result;
-}
+let getPageData = datas.getPageData
 module.exports = {
     get: (req, res) => {
         let id = req.params.id
