@@ -20,13 +20,15 @@ module.exports = {
         let searchKeyword = req.query.searchKeyword
         let result = getResult();
         if(id){
+            //console.log(users.length + ' ' + id)
             let user = util.findIndex(users, id)
             user.roles = util.queryRela(id, 'user_id', 'role_id', datas.userRelRole, datas.roles)
+            user.slaves = util.queryRela(id, 'master_id', 'slave_id', datas.slaves, datas.users)
             result.result.data = user
         }else if(searchKeyword) {
             let curPage = req.query.curPage || 1
             let filterUsers = _.filter(users, _.conforms({'login_name': function(name){
-                return ~searchKeyword.indexOf(name)
+                return ~name.indexOf(searchKeyword)
             }}))
             let pageInfo = getPageData(filterUsers, curPage)
             _.forEach(pageInfo, (value, key) => {
@@ -61,17 +63,22 @@ module.exports = {
         let user = req.body
         if(user){
            let id = user.id
-            let roleIds = user.roleIds
+            let roleIds = user.roleIds || ''
+            let slaveIds = user.slaveIds || ''
             delete user.roleIds
+            delete user.slaveIds
             if(id){
                 let idx = _.findIndex(users, {id: id});
-                user[idx] = user
+                users[idx] = user
             }else{
-                id = user.id = guui();
+                id = user.id = util.uuid();
                 users.push(user);
                 result.result.id = user.id;
             }
+            util.delAllRela(id, 'user_id', datas.userRelRole)
+            util.delAllRela(id, 'master_id', datas.slaves)
             util.notEmpty(roleIds) && util.addRela(id, roleIds.split(','), 'user_id', 'role_id', datas.userRelRole)
+            util.notEmpty(slaveIds) && util.addRela(id, slaveIds.split(','), 'master_id', 'slave_id', datas.slaves)
         }
         res.json(result)
     }

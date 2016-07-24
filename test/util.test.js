@@ -12,8 +12,6 @@ describe('test util', function(){
         let roles = util.queryRela(id, 'user_id', 'role_id', datas.userRelRole, datas.roles);
         expect(roles).to.have.length(1);
     })
-})
-describe('test addRela', function(){
     it('util.addRela', function(){
         let users = datas.users
         let id = users[0].id

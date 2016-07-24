@@ -2,7 +2,7 @@
  * Created by liljay on 2016/7/21.
  */
 let datas = require('./datas')
-var guui = require('../util')
+var util = require('../util')
 var _ = require('lodash')
 let users = datas.users
 let getResult = function (){

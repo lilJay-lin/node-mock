@@ -5,10 +5,7 @@ let datas = require('./datas')
 let util = require('../util')
 var _ = require('lodash')
 let roles = datas.roles
-let roleRelRole = datas.roleRelRole
-let getResult = function (){
-    return _.clone({ "success":1,"msg":"","result":{}})
-};
+let getResult = util.getResult
 
 /*/role : GET_2/POST_2（searchKeyword）
 /role/{id} : GET_2/PATCH_2/DELETE_2
@@ -25,8 +22,8 @@ module.exports = {
             result.result.data = role
         }else if(searchKeyword) {
             let curPage = req.query.curPage || 1
-            let filterUsers = _.filter(roles, _.conforms({'login_name': function(name){
-                return ~searchKeyword.indexOf(name)
+            let filterUsers = _.filter(roles, _.conforms({'name': function(name){
+                return ~name.indexOf(searchKeyword)
             }}))
             let pageInfo = getPageData(filterUsers, curPage)
             _.forEach(pageInfo, (value, key) => {
@@ -46,16 +43,17 @@ module.exports = {
         let role = req.body
         if(role){
            let id = role.id
-            let permissionIds = role.permissionIds
+            let permissionIds = role.permissionIds || ''
             delete role.permissionIds
             if(id){
                 let idx = _.findIndex(roles, {id: id});
-                role[idx] = role
+                roles[idx] = role
             }else{
-                id = role.id = guui();
+                id = role.id = util.uuid();
                 roles.push(role);
                 result.result.id = role.id;
             }
+            util.delAllRela(id, 'role_id', datas.roleRelPermission)
             util.notEmpty(permissionIds) && util.addRela(id, permissionIds.split(','), 'role_id', 'permission_id', datas.roleRelPermission)
         }
         res.json(result)

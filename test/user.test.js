@@ -23,9 +23,22 @@ describe('#user test', function(){
                 if(err){
                     throw err
                 }
-                console.log(res.body)
                 let data = res.body.result.data
                 expect(data.id).to.equal(id)
+                done()
+            })
+    })
+    it('batch delete /user/batch', function (done){
+        request.post('http://localhost:3000/user/batch')
+            .send({
+                ids:id
+            })
+            .end(function(err, res){
+                if(err){
+                    throw err
+                }
+                let ids = res.body.result.ids
+                expect(ids[0]).to.equal(id)
                 done()
             })
     })
