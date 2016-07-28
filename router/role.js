@@ -19,7 +19,7 @@ module.exports = {
         if(id){
             let role = util.findIndex(roles, id)
             role.permissions = util.queryRela(id, 'role_id', 'permission_id', datas.roleRelPermission, datas.permissions)
-            result.result.data = role
+            result.result = role
         }else if(searchKeyword) {
             let curPage = req.query.curPage || 1
             let filterUsers = _.filter(roles, _.conforms({'name': function(name){
@@ -27,13 +27,13 @@ module.exports = {
             }}))
             let pageInfo = getPageData(filterUsers, curPage)
             _.forEach(pageInfo, (value, key) => {
-                result[key] = value
+                result.result[key] = value
             })
         }else {
             let curPage = req.query.curPage || 1
             let pageInfo = getPageData(_.clone(roles), curPage)
             _.forEach(pageInfo,(value, key) => {
-                result[key] = value
+                result.result[key] = value
             })
         }
         res.json(result)
@@ -51,7 +51,7 @@ module.exports = {
             }else{
                 id = role.id = util.uuid();
                 roles.push(role);
-                result.result.id = role.id;
+                result.result = role.id;
             }
             util.delAllRela(id, 'role_id', datas.roleRelPermission)
             util.notEmpty(permissionIds) && util.addRela(id, permissionIds.split(','), 'role_id', 'permission_id', datas.roleRelPermission)

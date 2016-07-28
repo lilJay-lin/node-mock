@@ -22,14 +22,14 @@ const queryRela = function (id, relaKey, relatedKey, relas, details){
     })
 }
 const getPageData = function (datas = [], curPage = 1){
-    let result = {result: {}}
+    let result = {}
     let pageSize = 10
     let total = datas.length
     let totalPage = parseInt(total / pageSize, 10) + (total % pageSize === 0 ? 0 : 1)
     if(curPage > totalPage){
-        result.result.datas = []
+        result.datas = []
     }else {
-        result.result.datas = datas.splice((curPage - 1) * pageSize, pageSize )
+        result.datas = datas.splice((curPage - 1) * pageSize, pageSize )
     }
     result.total = total
     result.curPage = curPage

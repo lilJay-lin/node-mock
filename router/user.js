@@ -24,7 +24,7 @@ module.exports = {
             let user = util.findIndex(users, id)
             user.roles = util.queryRela(id, 'user_id', 'role_id', datas.userRelRole, datas.roles)
             user.slaves = util.queryRela(id, 'master_id', 'slave_id', datas.slaves, datas.users)
-            result.result.data = user
+            result.result = user
         }else if(searchKeyword) {
             let curPage = req.query.curPage || 1
             let filterUsers = _.filter(users, _.conforms({'login_name': function(name){
@@ -32,13 +32,13 @@ module.exports = {
             }}))
             let pageInfo = getPageData(filterUsers, curPage)
             _.forEach(pageInfo, (value, key) => {
-                result[key] = value
+                result.result[key] = value
             })
         }else {
             let curPage = req.query.curPage || 1
             let pageInfo = getPageData(_.clone(users), curPage)
             _.forEach(pageInfo,(value, key) => {
-                result[key] = value
+                result.result[key] = value
             })
         }
         res.json(result)
@@ -73,12 +73,16 @@ module.exports = {
             }else{
                 id = user.id = util.uuid();
                 users.push(user);
-                result.result.id = user.id;
+                result.result = user.id;
             }
-            util.delAllRela(id, 'user_id', datas.userRelRole)
-            util.delAllRela(id, 'master_id', datas.slaves)
-            util.notEmpty(roleIds) && util.addRela(id, roleIds.split(','), 'user_id', 'role_id', datas.userRelRole)
-            util.notEmpty(slaveIds) && util.addRela(id, slaveIds.split(','), 'master_id', 'slave_id', datas.slaves)
+            try{
+                util.delAllRela(id, 'user_id', datas.userRelRole)
+                util.delAllRela(id, 'master_id', datas.slaves)
+                util.notEmpty(roleIds) && util.addRela(id, roleIds.split(','), 'user_id', 'role_id', datas.userRelRole)
+                util.notEmpty(slaveIds) && util.addRela(id, slaveIds.split(','), 'master_id', 'slave_id', datas.slaves)
+            }catch (e){
+                console.log(e)
+            }
         }
         res.json(result)
     }

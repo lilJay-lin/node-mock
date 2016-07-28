@@ -24,9 +24,7 @@ module.exports = {
                 }
             })
         }
-        result.result = {
-            ids: delIds
-        }
+        result.result = delIds
         res.json(result)
     }
 }

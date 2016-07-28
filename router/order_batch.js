@@ -4,10 +4,8 @@
 let datas = require('./datas')
 var util = require('../util')
 var _ = require('lodash')
-let roles = datas.roles
-let getResult = function (){
-    return _.clone({ "success":1,"msg":"","result":{}})
-};
+let orders = datas.orders
+let getResult = util.getResult
 module.exports = {
     post: (req, res) => {
         let data = req.body
@@ -17,14 +15,14 @@ module.exports = {
         if(str){
             let ids = str.split(',')
             _.forEach(ids, function (id) {
-                let idx = _.findIndex(roles, {id: id});
+                let idx = _.findIndex(orders, {id: id});
                 if(~idx){
-                    roles.splice(idx,1);
+                    orders.splice(idx,1);
                     delIds.push(id)
                 }
             })
         }
-        result.result =  delIds
+        result.result = delIds
         res.json(result)
     }
 }
