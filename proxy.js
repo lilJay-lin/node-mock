@@ -19,6 +19,7 @@ module.exports = function({port, host, protocol}){
         })
         let method = req.method.toLowerCase()
         let sreq = request[method](url)
+            //.type('application/json')
             .send(req.body || {})
 
         /*

@@ -6,9 +6,7 @@ let util = require('../util')
 var _ = require('lodash')
 let users = datas.users
 let userRelRole = datas.userRelRole
-let getResult = function (){
-    return _.clone({ "success":1,"msg":"","result":{}})
-};
+let getResult = util.getResult
 
 /*/user : GET_2/POST_2（searchKeyword）
 /user/{id} : GET_2/PATCH_2/DELETE_2
@@ -22,12 +20,12 @@ module.exports = {
         if(id){
             //console.log(users.length + ' ' + id)
             let user = util.findIndex(users, id)
-            user.roles = util.queryRela(id, 'user_id', 'role_id', datas.userRelRole, datas.roles)
-            user.slaves = util.queryRela(id, 'master_id', 'slave_id', datas.slaves, datas.users)
+            user.roles = util.queryRela(id, 'userId', 'roleId', datas.userRelRole, datas.roles)
+            user.slaves = util.queryRela(id, 'masterId', 'slaveId', datas.slaves, datas.users)
             result.result = user
         }else if(searchKeyword) {
             let curPage = req.query.curPage || 1
-            let filterUsers = _.filter(users, _.conforms({'login_name': function(name){
+            let filterUsers = _.filter(users, _.conforms({'loginName': function(name){
                 return ~name.indexOf(searchKeyword)
             }}))
             let pageInfo = getPageData(filterUsers, curPage)
@@ -76,10 +74,10 @@ module.exports = {
                 result.result = user.id;
             }
             try{
-                util.delAllRela(id, 'user_id', datas.userRelRole)
-                util.delAllRela(id, 'master_id', datas.slaves)
-                util.notEmpty(roleIds) && util.addRela(id, roleIds.split(','), 'user_id', 'role_id', datas.userRelRole)
-                util.notEmpty(slaveIds) && util.addRela(id, slaveIds.split(','), 'master_id', 'slave_id', datas.slaves)
+                util.delAllRela(id, 'userId', datas.userRelRole)
+                util.delAllRela(id, 'masterId', datas.slaves)
+                util.notEmpty(roleIds) && util.addRela(id, roleIds.split(','), 'userId', 'roleId', datas.userRelRole)
+                util.notEmpty(slaveIds) && util.addRela(id, slaveIds.split(','), 'masterId', 'slaveId', datas.slaves)
             }catch (e){
                 console.log(e)
             }

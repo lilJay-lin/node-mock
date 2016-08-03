@@ -32,16 +32,21 @@ let permissions = (function(){
     }
     return permissions
 })()
+
 let users = (function(){
     let i = 0;
     let users = []
+    users.push({
+        loginName: 'admin',
+        password: '123456'
+    })
     for(;i < 20; i++){
         let name = 'name' + (i + 1)
         users.push({
             id: uuid(),
-            login_name: name,
+            loginName: name,
             identity: 441522 + (Math.random() + '').substr(2, 10),
-            phone_num: 159 + (Math.random() + '').substr(3,8),
+            phoneNum: 159 + (Math.random() + '').substr(3,8),
             name: uuid(),
             password: '',
             description: name
@@ -56,8 +61,8 @@ let userRelRole = (function(){
     for(; i<users.length; i++){
         userRelRoles.push({
             id: uuid(),
-            role_id: roles[getRandom(roles.length)].id,
-            user_id: users[i].id
+            roleId: roles[getRandom(roles.length)].id,
+            userId: users[i].id
         })
     }
     return userRelRoles
@@ -68,15 +73,15 @@ let roleRelPermission = (function(){
     for(; i<roles.length; i++){
         roleRelPermissions.push({
             id: uuid(),
-            permission_id: permissions[getRandom(permissions.length)].id,
-            role_id: roles[i].id
+            permissionId: permissions[getRandom(permissions.length)].id,
+            roleId: roles[i].id
         })
     }
     return roleRelPermissions
 })();
 /*
 *
-* order_status:
+* orderStatus:
 * 1、未收未付
  2、未收需付
  3、已收未付
@@ -93,37 +98,37 @@ let orders = (function(){
     let i = 0;
     for(;i < 20; i++){
         let name = 'name' + (i + 1)
-        let customer_name = 'customer_name'+ (i + 1)
+        let customerName = 'customerName'+ (i + 1)
         orders.push({
             id: uuid(),
-            order_number: uuid(),
-            order_status: getRandom(10) + 1,
-            service_type: '',
-            customer_name: customer_name,
-            customer_phone_num: 159 + (Math.random() + '').substr(3,8),
-            customer_tel: '020-' + (Math.random() + '').substr(3,7),
-            customer_address: 'address road num ' + (i + 1),
-            product_info: 'product_info ' + (i + 1),
-            product_imgs: [],
-            logistics_info: 'logistics_info ' + (i + 1),
-            logistics_imgs: [],
-            repair_info: 'repair_info ' + (i + 1),
-            repair_imgs: [],
-            is_checked: i % 2 === 0 ? true : false,
-            check_info: 'check_info' + (i + 1),
-            shop_info: 'shop_info' + (i + 1),
-            order_price: Math.floor(i * Math.random() * 100),
-            service_price: Math.floor(i * Math.random() * 100),
+            orderNumber: uuid(),
+            orderStatus: getRandom(10) + 1,
+            serviceType: '',
+            customerName: customerName,
+            customerPhoneNum: 159 + (Math.random() + '').substr(3,8),
+            customerTel: '020-' + (Math.random() + '').substr(3,7),
+            customerAddress: 'address road num ' + (i + 1),
+            productInfo: 'productInfo ' + (i + 1),
+            productImgs: '',
+            logisticsInfo: 'logisticsInfo ' + (i + 1),
+            logisticsImgs: '',
+            repairInfo: 'repairInfo ' + (i + 1),
+            repairImgs: '',
+            isChecked: i % 2 === 0 ? 1 : 0,
+            checkInfo: 'checkInfo' + (i + 1),
+            shopInfo: 'shopInfo' + (i + 1),
+            orderPrice: Math.floor(i * Math.random() * 100),
+            servicePrice: Math.floor(i * Math.random() * 100),
             profit: Math.floor(i * Math.random() * 100),
-            price_change_reason: 'price_change_reason' + (i + 1),
+            priceChangeReason: 'priceChangeReason' + (i + 1),
             judgment: Math.floor(i * Math.random() * 100),
-            judge_reason: 'judge_reason' + (i + 1),
+            judgeReason: 'judgeReason' + (i + 1),
             description: 'description' + (i + 1),
-            creator_id: users[getRandom(users.length)].id,
-            cetate_date: '2016-07-24',
-            complete_date: '',
-            order_price_changed: Math.floor(i * Math.random() * 100),
-            service_price_changed: Math.floor(i * Math.random() * 100)
+            creatorId: users[getRandom(users.length)].id,
+            cetateDate: '2016-07-24',
+            completeDate: '',
+            orderPriceChanged: Math.floor(i * Math.random() * 100),
+            servicePriceChanged: Math.floor(i * Math.random() * 100)
         })
     }
     return orders
@@ -133,36 +138,36 @@ let workers = (function(){
     let i = 0;
     for(;i < 20; i++){
         let name = 'name' + (i + 1)
-        let customer_name = 'customer_name'+ (i + 1)
+        let customerName = 'customerName'+ (i + 1)
         workers.push({
             id: uuid(),
-            workman_number: uuid(),
-            head_img: '',
+            workmanNumber: uuid(),
+            headImg: '',
             name: name,
-            phone_num: 159 + (Math.random() + '').substr(3,8),
+            phoneNum: 159 + (Math.random() + '').substr(3,8),
             qq: (Math.random() + '').substr(3,8),
-            receive_type: i % 2 === 0 ? 0 : 1,
-            alipay_account: '',
+            receiveType: i % 2 === 0 ? 0 : 1,
+            alipayAccount: '',
             bank: '',
-            card_num: '',
+            cardNum: '',
             birthday: null,
             province: '',
             city: '',
             area: '',
             address: 'address' + (i + 1),
-            id_card_face: '',
-            id_care_back: '',
-            service_type: '',
-            service_items: '',
-            service_area: '',
-            team_people_num: i,
-            truck_num: i,
+            idCardFace: '',
+            idCardBack: '',
+            serviceType: '',
+            serviceItems: '',
+            serviceArea: '',
+            teamPeopleNum: i,
+            truckNum: i,
             tonnage: getRandom(10),
-            willing_pick_address: 'willing_pick_address' + (i + 1),
+            willingPickAddress: 'willingPickAddress' + (i + 1),
             logistics: 'logistics' + (i + 1),
             strength: 'strength' + (i + 1),
             description: 'description' + (i + 1),
-            cooperate_times: i,
+            cooperateTimes: i,
             score: getRandom(10)
         })
     }
@@ -174,8 +179,8 @@ let orderRelWorker = (function(){
     for(; i<orders.length; i++){
         orderRelWorker.push({
             id: uuid(),
-            worker_id: workers[getRandom(workers.length)].id,
-            order_id: orders[i].id
+            workerId: workers[getRandom(workers.length)].id,
+            orderId: orders[i].id
         })
     }
     return orderRelWorker

@@ -5,9 +5,7 @@ let datas = require('./datas')
 let util = require('../util')
 var _ = require('lodash')
 let permissions = datas.permissions
-let getResult = function (){
-    return _.clone({ "success":1,"msg":"","result":{}})
-};
+let getResult = util.getResult
 
 /*/permission : GET_2/POST_2（searchKeyword）
 /permission/{id} : GET_2/PATCH_2/DELETE_2

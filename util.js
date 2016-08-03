@@ -3,7 +3,7 @@
  */
 const _ = require('lodash')
 const getResult = function (){
-    return _.clone({ "success":1,"msg":"","result":{}})
+    return _.clone({ "status":1,"msg":"","result":{}})
 };
 const compact = function (arr, key){
     let newArr = arr.map(function(data){

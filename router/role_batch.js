@@ -5,9 +5,7 @@ let datas = require('./datas')
 var util = require('../util')
 var _ = require('lodash')
 let roles = datas.roles
-let getResult = function (){
-    return _.clone({ "success":1,"msg":"","result":{}})
-};
+let getResult = util.getResult
 module.exports = {
     post: (req, res) => {
         let data = req.body

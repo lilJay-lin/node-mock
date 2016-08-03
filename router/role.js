@@ -18,7 +18,7 @@ module.exports = {
         let result = getResult();
         if(id){
             let role = util.findIndex(roles, id)
-            role.permissions = util.queryRela(id, 'role_id', 'permission_id', datas.roleRelPermission, datas.permissions)
+            role.permissions = util.queryRela(id, 'roleId', 'permissionId', datas.roleRelPermission, datas.permissions)
             result.result = role
         }else if(searchKeyword) {
             let curPage = req.query.curPage || 1
@@ -53,8 +53,8 @@ module.exports = {
                 roles.push(role);
                 result.result = role.id;
             }
-            util.delAllRela(id, 'role_id', datas.roleRelPermission)
-            util.notEmpty(permissionIds) && util.addRela(id, permissionIds.split(','), 'role_id', 'permission_id', datas.roleRelPermission)
+            util.delAllRela(id, 'roleId', datas.roleRelPermission)
+            util.notEmpty(permissionIds) && util.addRela(id, permissionIds.split(','), 'roleId', 'permissionId', datas.roleRelPermission)
         }
         res.json(result)
     }

@@ -6,6 +6,7 @@ let util = require('../util')
 var _ = require('lodash')
 let orders = datas.orders
 let getResult = util.getResult
+let workers = datas.workers
 
 /*/order : GET_2/POST_2（searchKeyword）
  /order/{id} : GET_2/PATCH_2/DELETE_2
@@ -18,11 +19,13 @@ module.exports = {
         let result = getResult();
         if(id){
             let order = util.findIndex(orders, id)
-            order.workers = util.queryRela(id, 'order_id', 'worker_id', datas.orderRelWorker, datas.workers)
+            let workmanId = order.workmanId
+            let idx = _.findIndex(workers, {id: workmanId})
+            order.workman = ~idx ? workers[idx] : {}
             result.result = order
         }else if(searchKeyword) {
             let curPage = req.query.curPage || 1
-            let filterUsers = _.filter(orders, _.conforms({'shop_info': function(name){
+            let filterUsers = _.filter(orders, _.conforms({'shopInfo': function(name){
                 return ~name.indexOf(searchKeyword)
             }}))
             let pageInfo = getPageData(filterUsers, curPage)
@@ -53,8 +56,8 @@ module.exports = {
                 orders.push(order);
                 result.result = order.id;
             }
-            util.delAllRela(id, 'order_id', datas.orderRelWorker)
-            util.notEmpty(workerIds) && util.addRela(id, workerIds.split(','), 'order_id', 'worker_id', datas.orderRelWorker)
+            util.delAllRela(id, 'orderId', datas.orderRelWorker)
+            util.notEmpty(workerIds) && util.addRela(id, workerIds.split(','), 'orderId', 'workerId', datas.orderRelWorker)
         }
         res.json(result)
     }
